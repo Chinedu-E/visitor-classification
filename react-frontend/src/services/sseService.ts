@@ -15,10 +15,9 @@ export class SSEService {
 
     this.eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data.questions);
-      
+      console.log(data.questions)
       if (data.questions) {
-        this.dispatch(addQuestions(JSON.parse(data.questions)));
+        this.dispatch(addQuestions(data.questions));
       }
       
       if (data.status === 'complete') {
@@ -33,7 +32,6 @@ export class SSEService {
     };
 
     this.eventSource.onerror = (e) => {
-        console.log(e)
       this.dispatch(setError('Something went wrong, please try again.'));
       this.dispatch(setGenerating(false));
       this.disconnect();
