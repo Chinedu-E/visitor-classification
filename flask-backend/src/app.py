@@ -43,6 +43,7 @@ async def generate_content():
     links_cached = redis_client.get(f"{url}:links")
     
     if links_cached:
+        
         process_links_task.delay(session_id, scraper)
         return {
             'session_id': session_id,
@@ -105,7 +106,7 @@ def stream(session_id: str):
         
         try:
             while True:
-                message = pubsub.get_message(ignore_subscribe_messages=True)
+                message = pubsub.get_message(ignore_subscribe_messages=True, timeout=None)
                 if message is not None:
                     data = json.loads(message['data'])
                     print(data)

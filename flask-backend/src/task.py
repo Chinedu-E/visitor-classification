@@ -1,11 +1,13 @@
+import asyncio
 from datetime import datetime
 import json
 from celery import Celery
 import redis.asyncio as async_redis
 
-from src.crud import create_website, bulk_create_questions_for_website
+from src.crud import create_website, bulk_create_questions_for_website, get_questions_from_url
 from src.db import db_session
-from .utils.llm import QuestionGenerator
+from src.utils.llm import QuestionGenerator
+from src.utils.utils import format_question_for_api
 from typing import Dict, List, Optional
 import json
 import logging
@@ -86,16 +88,21 @@ async def process_main_page(
     """Processes the main page content and generates questions."""
     try:
         cached_questions = await get_cached_questions(redis_client, question_generator.url_info['url'])
-        
         if cached_questions:
             questions = cached_questions
+            await asyncio.sleep(1) # allow frontend to connect
         else:
-            questions = question_generator.generate_questions()
-            if len(questions) > 0:
-                await cache_questions(redis_client, question_generator.url_info['url'], questions)
-                # Add to db
-                website = await create_website(db, question_generator.url_info['url'], question_generator.url_info['main_page_text'])
-                await bulk_create_questions_for_website(db, website.id, questions)
+            questions = await get_questions_from_url(question_generator.url_info['url'])
+            if questions is None:
+                questions = question_generator.generate_questions()
+                if len(questions) > 0:
+                    await cache_questions(redis_client, question_generator.url_info['url'], questions)
+                    # Add to db
+                    """website = await create_website(db, question_generator.url_info['url'], question_generator.url_info['main_page_text'])
+                    await bulk_create_questions_for_website(db, website.id, questions)"""
+            else:
+                questions = format_question_for_api(questions)
+                
         await publish_questions(
             session_id=session_id,
             redis_client=redis_client,
@@ -135,6 +142,7 @@ async def publish_questions(
         f'questions:{session_id}',
         json.dumps(payload.__dict__)
     )
+    print("published")
 
 
 async def publish_completion_status(

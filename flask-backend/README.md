@@ -109,7 +109,7 @@ python -m src.tasks
 
 3. Run Flask application:
 ```bash
-flask run
+flask --app src.app --debug run
 ```
 
 ## 📡 API Endpoints
