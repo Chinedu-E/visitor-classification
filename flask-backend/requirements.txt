@@ -13,3 +13,7 @@ celery[redis]
 playwright
 boto3
 flask_cors
+json_fix
+pytest-mock
+pytest 
+pytest-asyncio

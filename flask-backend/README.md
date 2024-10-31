@@ -15,13 +15,13 @@ A sophisticated backend service that analyzes websites to generate personalized 
 ## 🛠 Technology Stack
 
 - **Framework**: Flask (Async)
-- **Database**: PostgreSQL
-- **Cache**: Redis
+- **Database**: PostgreSQL (Async)
+- **Cache**: Redis (Async)
 - **Task Queue**: Celery
 - **AI/ML**: 
   - Google Gemini API
   - RAKE (Rapid Automatic Keyword Extraction)
-- **Web Scraping**: Playwright
+- **Web Scraping**: Playwright (Async)
 - **Storage**: AWS S3 (for preview images)
 
 
