@@ -39,7 +39,7 @@ export default function GenProgress() {
   
       timerRef.current = setInterval(() => {
         const elapsedTime = Date.now() - startTimeRef.current;
-        const duration = 13000; // 15 seconds
+        const duration = 20000; // 20 seconds
   
         // If questions are defined, complete the progress
         if (questions?.length > 0) {
