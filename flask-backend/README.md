@@ -27,7 +27,6 @@ A sophisticated backend service that analyzes websites to generate personalized 
 
 ## Project Structure
 ```
-.
 ├── src/
 │   ├── utils/
 │   │   ├── llm.py.        # Main Question Generator
@@ -39,6 +38,11 @@ A sophisticated backend service that analyzes websites to generate personalized 
 │   ├── task.py            # Celery worker file
 │   └── crud.py            # Basic DB access functions
 └── tests/
+    ├── conftest.py
+    ├── test_routes.py
+    ├── test_llm.py
+    ├── test_utils.py
+    └── test_scraper.py
 ```
 
 
@@ -184,12 +188,17 @@ The API implements following error responses:
 - **Preview Images**: Cached with URL:img as key
 - **Cache Duration**: 24 hours default TTL
 
-## 🔍 Monitoring
+## Testing
+```bash
+pytest tests/
+```
 
-- Celery task monitoring
-- Redis cache hit/miss metrics
-- API endpoint response times
-
+## Future imporovements
+- Utilizing sitemap.xml along with storing change frequency in database to reuse after cache invalidation
+- Recommend site link based on user's answers
+- Dynamic generation per user response. So generating one question at a time dependent on previous response
+- Improvements on preview image. For instance leaving a browser open ready for requests as opposed to spinning up per request.
+- - Compress png size
 
 ## 📄 License
 
