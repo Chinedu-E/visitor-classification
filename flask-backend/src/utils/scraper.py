@@ -79,6 +79,7 @@ class WebsiteScraper:
         """Efficiently clean and normalize text."""
         # Remove extra whitespace and normalize
         text = re.sub(r'\s+', ' ', text)
+        text = text.strip()
         return text
 
     async def _fetch_page(self, url: str, parse_links: bool = False) -> tuple[str, set]:
