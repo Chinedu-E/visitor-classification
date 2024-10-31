@@ -12,8 +12,7 @@ interface QuestionItemProps {
 }
 
 export function QuestionItem({ question, index, value, onChange }: QuestionItemProps) {
-    console.log(question)
-  const isMultipleChoice = question.options.length > 0;
+  const isMultipleChoice = question.options && question.options.length > 0;
 
   return (
     <Card className="border-none shadow-none">
