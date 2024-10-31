@@ -98,8 +98,8 @@ async def process_main_page(
                 if len(questions) > 0:
                     await cache_questions(redis_client, question_generator.url_info['url'], questions)
                     # Add to db
-                    """website = await create_website(db, question_generator.url_info['url'], question_generator.url_info['main_page_text'])
-                    await bulk_create_questions_for_website(db, website.id, questions)"""
+                    website = await create_website(db, question_generator.url_info['url'], question_generator.url_info['main_page_text'])
+                    await bulk_create_questions_for_website(db, website.id, questions)
             else:
                 questions = format_question_for_api(questions)
                 
