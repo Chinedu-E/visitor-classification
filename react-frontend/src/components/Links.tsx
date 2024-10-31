@@ -12,7 +12,7 @@ export default function Links() {
     data: state.url.links,
     isLoading: state.url.isGenerating,
   }));
-
+  const uniqueLinks = Array.from(new Set(generateData))
 
   const showLoading =  (currentUrl && !generateData);
   const hasLinks = generateData && generateData.length > 0;
@@ -46,7 +46,7 @@ export default function Links() {
         ) : (
           <ScrollArea className="h-[300px] pr-4">
             <ul className="space-y-2">
-              {generateData.map((link, index) => (
+              {uniqueLinks.map((link, index) => (
                 <li key={`${link}-${index}`}>
                   <a
                     href={link}
