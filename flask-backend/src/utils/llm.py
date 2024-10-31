@@ -105,12 +105,12 @@ class QuestionGenerator:
         prompt = f"""
             Based on this website analysis: {analysis}
             and its sublink keywords: {keywords['sublink_keywords']}
-            Generate FOUR (4) multiple choice questions that are very specific to this website that would help categorize visitors:
+            Generate FOUR (4) multiple choice questions that would help categorize visitors:
         """
         url = "https://api.arliai.com/v1/chat/completions"
 
         payload = json.dumps({
-            "model": "Meta-Llama-3.1-8B-Instruct",
+            "model": "Mistral-Nemo-12B-Instruct-2407",
             "messages": [{
             "role": "system",
             "content": "You are a helpful assistant that generates survey questions."
@@ -131,6 +131,7 @@ class QuestionGenerator:
 
         response = requests.request("POST", url, headers=headers, data=payload)
         res =  response.json()
+        print(res)
         questions = res["choices"][0]['message']['content']
         if (isinstance(questions, str)):
             questions = json.loads(questions)
