@@ -1,0 +1,15 @@
+Flask[async]
+sqlalchemy
+asyncpg
+httpx
+beautifulsoup4
+google-generativeai
+rake-nltk
+python-dotenv
+openai
+greenlet
+redis
+celery[redis]
+playwright
+boto3
+flask_cors
