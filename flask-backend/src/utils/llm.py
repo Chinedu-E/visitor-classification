@@ -1,12 +1,12 @@
 import os
 import json
-from typing import Tuple, List, TypedDict, Optional
+from typing import Tuple, List, Optional
 from rake_nltk import Rake
 import google.generativeai as genai
 from dotenv import load_dotenv
 from openai import OpenAI
 import requests
-from typing import TypedDict
+from typing_extensions import TypedDict
 
 
 
@@ -132,6 +132,8 @@ class QuestionGenerator:
         response = requests.request("POST", url, headers=headers, data=payload)
         res =  response.json()
         questions = res["choices"][0]['message']['content']
+        if (isinstance(questions, str)):
+            questions = json.loads(questions)
         return questions
     
         """result = self.model.generate_content(
