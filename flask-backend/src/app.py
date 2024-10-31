@@ -34,6 +34,10 @@ async def generate_content():
         return {"error": "No URL provided"}, 400
     
     scraper = WebsiteScraper(url)
+    valid = scraper._is_valid_url(url)
+    if not valid:
+        return {"error": "Invalid URL provided"}, 400
+    
     session_id = str(uuid.uuid4())
     
     links_cached = redis_client.get(f"{url}:links")
@@ -47,7 +51,6 @@ async def generate_content():
     
     await scraper.scrape_all()
     links = list(scraper.links) + [scraper.url]
-    print(links)
     process_links_task.delay(session_id, scraper)
     
     if len(links) > 1: # Only cache when we see more than the original link
@@ -66,6 +69,11 @@ async def get_preview_image() -> dict:
     
     if not url:
         return {"error": "No URL provided"}, 400
+    
+    scraper = WebsiteScraper(url)
+    valid = scraper._is_valid_url(url)
+    if not valid:
+        return {"error": "Invalid URL provided"}, 400
     
     img_cached = redis_client.get(f"{url}:img")
     if img_cached:
